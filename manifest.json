@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "chat-frontend",
+  "version": "1.0",
+  "permissions": ["declarativeNetRequest", "storage", "tabs"],
+  "host_permissions": [
+    "https://cdn.opal.optimizely.com/*",
+    "https://cmp.optimizely.com/*"
+  ],
+  "icons": {
+    "16": "opal.png",
+    "48": "opal.png",
+    "128": "opal.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "opal.png",
+      "48": "opal.png",
+      "128": "opal.png"
+    },
+    "default_title": "Chat Frontend"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
+}

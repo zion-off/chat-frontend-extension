@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "regexSubstitution": "https://opal-frontend-localdev.optimizely.com:9123/\\1"
+      }
+    },
+    "condition": {
+      "regexFilter": "^https://cdn\\.opal\\.optimizely\\.com/opal-chat/(.*)",
+      "resourceTypes": ["script", "xmlhttprequest", "other"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "Content-Security-Policy",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "||cmp.optimizely.com",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  }
+]

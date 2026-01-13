@@ -8,7 +8,7 @@
     }
 
     body {
-      width: 240px;
+      width: 260px;
       padding: 16px;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -42,6 +42,7 @@
       padding: 12px 14px;
       border-radius: 8px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 8px;
     }
 
     .toggle-label {
@@ -95,14 +96,10 @@
     }
 
     .status {
-      margin-top: 12px;
+      margin-top: 8px;
       text-align: center;
       font-size: 11px;
       color: #666;
-    }
-
-    .status.enabled {
-      color: #0037ff;
     }
   </style>
 </head>
@@ -113,9 +110,25 @@
   </div>
 
   <div class="toggle-container">
-    <span class="toggle-label">Local Dev Mode</span>
+    <span class="toggle-label">CMP</span>
     <label class="toggle-switch">
-      <input type="checkbox" id="toggle">
+      <input type="checkbox" id="toggle-cmp">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-container">
+    <span class="toggle-label">Opal Standalone</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="toggle-opal">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-container">
+    <span class="toggle-label">Zaius</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="toggle-zaius">
       <span class="slider"></span>
     </label>
   </div>

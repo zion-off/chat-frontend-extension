@@ -2,10 +2,12 @@
   "manifest_version": 3,
   "name": "chat-frontend",
   "version": "1.0",
-  "permissions": ["declarativeNetRequest", "storage", "tabs"],
+  "permissions": ["declarativeNetRequest", "declarativeNetRequestWithHostAccess", "storage", "tabs"],
   "host_permissions": [
     "https://cdn.opal.optimizely.com/*",
-    "https://cmp.optimizely.com/*"
+    "https://cmp.optimizely.com/*",
+    "https://opal.optimizely.com/*",
+    "https://app.zaius.com/*"
   ],
   "icons": {
     "16": "opal.png",
@@ -24,13 +26,11 @@
   "background": {
     "service_worker": "background.js"
   },
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
-  }
+  "content_scripts": [
+    {
+      "matches": ["https://cmp.optimizely.com/*", "https://opal.optimizely.com/*", "https://app.zaius.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
 }

@@ -1,26 +1,42 @@
-const toggle = document.getElementById('toggle');
+const SITES = ['cmp', 'opal', 'zaius'];
+const LABELS = { cmp: 'CMP', opal: 'Opal Standalone', zaius: 'Zaius' };
+
+const toggles = Object.fromEntries(
+  SITES.map(key => [key, document.getElementById(`toggle-${key}`)])
+);
 const statusEl = document.getElementById('status');
 
-function updateStatus(enabled) {
-  statusEl.textContent = enabled ? 'Redirecting to localhost:9123' : 'Extension disabled';
-  statusEl.className = 'status' + (enabled ? ' enabled' : '');
+function getState() {
+  return Object.fromEntries(
+    SITES.map(key => [`${key}Enabled`, toggles[key].checked])
+  );
 }
 
-chrome.storage.local.get(['enabled'], (result) => {
-  const enabled = result.enabled !== false;
-  toggle.checked = enabled;
-  updateStatus(enabled);
+function updateStatus() {
+  const active = SITES.filter(key => toggles[key].checked).map(key => LABELS[key]);
+  statusEl.textContent = active.length > 0 ? `Active: ${active.join(', ')}` : 'All disabled';
+}
+
+const storageKeys = SITES.map(key => `${key}Enabled`);
+chrome.storage.local.get(storageKeys, (result) => {
+  for (const key of SITES) {
+    toggles[key].checked = result[`${key}Enabled`] === true;
+  }
+  updateStatus();
 });
 
-toggle.addEventListener('change', async () => {
-  const enabled = toggle.checked;
-  chrome.storage.local.set({ enabled });
-  updateStatus(enabled);
-
-  chrome.runtime.sendMessage({ action: 'toggle', enabled });
+async function handleToggleChange() {
+  const state = getState();
+  chrome.storage.local.set(state);
+  updateStatus();
+  chrome.runtime.sendMessage({ action: 'updateRules', ...state });
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (tab?.id) {
     chrome.tabs.reload(tab.id);
   }
-});
+}
+
+for (const key of SITES) {
+  toggles[key].addEventListener('change', handleToggleChange);
+}

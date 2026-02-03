@@ -46,8 +46,7 @@ function createCspRule(id, domain) {
 }
 
 async function updateRules(state) {
-  const existingRules = await chrome.declarativeNetRequest.getDynamicRules();
-  const removeRuleIds = existingRules.map(r => r.id);
+  const allRuleIds = Object.values(SITES).flatMap(site => [site.cspRuleId, site.redirectRuleId]);
   const addRules = [];
 
   for (const [key, site] of Object.entries(SITES)) {
@@ -58,7 +57,7 @@ async function updateRules(state) {
   }
 
   try {
-    await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds, addRules });
+    await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: allRuleIds, addRules });
   } catch (error) {
     console.error('Failed to update rules:', error);
   }
